@@ -112,10 +112,10 @@ function ChildComponent(count, handleCount) {
   }
   ```
 
-  1 : 클라이언트 사이드에서 실행되는 것 보장(렌더링 후 실행)  
-   ex) window 객체 접근
+  1 : 컴포넌트 렌더링 도중 실행
 
-  2 : 컴포넌트 렌더링 도중 실행
+  2 : 클라이언트 사이드에서 실행되는 것 보장(렌더링 후 실행)  
+   ex) window 객체 접근
 
   <br>
 
