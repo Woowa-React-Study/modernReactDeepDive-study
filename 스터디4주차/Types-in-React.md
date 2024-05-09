@@ -502,6 +502,7 @@ const inputRef = useRef<HTMLInputElement>();
 HTML 태그의 ref 속성은 `RefObject` 타입만 받는데,
 inputRef가 현재는 `MutableRefObject`가 되어버렸다.
 이를 ref 속성에 넣으려하니 발생한 에러이다.
+
 <img src="./img/9.png" width="300">
 
 ### (정리) useRef 훅의 타입
