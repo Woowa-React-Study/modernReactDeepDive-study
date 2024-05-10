@@ -1,4 +1,4 @@
-# React의 샐명주기와 setState
+# React의 생명주기와 setState
 
 ## 도입부 - 오류 발생
 
