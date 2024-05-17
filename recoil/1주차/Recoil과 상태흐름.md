@@ -13,10 +13,12 @@ Atom : 하나의 전역 상태. 모든 컴포넌트에서 접근 가능하다.
 Selector : 파생 전역 상태. 다른 Atom이나 Selector를 응용해 새로운 상태 값을 계산하고 반환한다.
 
 Recoil의 컨셉은 `그래프`입니다. 즉, 각 Atom, Selector가 하나의 노드가 되어서 어느 컴포넌트에서든 상태 구독이 가능합니다.
+
 <img src="./images/recoil-graph.png" width=300>
 
 하나의 노드(Atom)에서 이를 구독하여 업데이트 되는 노드(Selector)가 생기고 이들을 구독하는 컴포넌트로 구성되는 그래프입니다.
 데이터의 흐름은 상태 -> 컴포넌트의 단방향 데이터 흐름입니다.
+
 <img src="./images/recoil-flow.JPG" width=300>
 
 단순함과 안정성이 Recoil의 최대 장점이라 할 수 있다.
@@ -31,44 +33,44 @@ Recoil의 컨셉은 `그래프`입니다. 즉, 각 Atom, Selector가 하나의 �
 
 - **언제 어디서 전역 상태를 변경했는지 알기 어렵다.**
 
-전역 상태는 자체는 단방향으로 흐르기에 파악하기 쉽다.
-하지만 하나의 전역 상태(Atom..)를 여러 컴포넌트에서 사용한다면?
-
-어느 컴포넌트가 언제 전역 상태를 변경하는지 디버깅하기 어렵다.
-
-전역 상태 자체의 단점이기도 하다. 자식과 부모 컴포넌트 전체에서 전역 상태에 접근이 가능하니 사실 어디서든 전역 상태 업데이트가 가능하기 때문이다.
-(Redux는 공식 개발자 도구가 있다고 함)
+  전역 상태는 자체는 단방향으로 흐르기에 파악하기 쉽다.
+  하지만 하나의 전역 상태(Atom..)를 여러 컴포넌트에서 사용한다면?
+  
+  어느 컴포넌트가 언제 전역 상태를 변경하는지 디버깅하기 어렵다.
+  
+  전역 상태 자체의 단점이기도 하다. 자식과 부모 컴포넌트 전체에서 전역 상태에 접근이 가능하니 사실 어디서든 전역 상태 업데이트가 가능하기 때문이다.
+  (Redux는 공식 개발자 도구가 있다고 함)
 
 - **React에서 사용할 때는 hook(useRecoilValue)를 사용한다.**
 
-즉, 컴포넌트 최상단에서 호출해야한다. 예를 들어, Id의 배열인 Atom이 있다고 하자. 그리고 Id 인자를 받아 Id에 따른 Quantity를 저장하는 SelectorFamily를 만들었다고 하자.
-
-다음과 같이 사용하는건 불가능하다. (내가 모르는 다른 기능이 있을 수도?)
-
-```tsx
-const ids = useRecoilValue(productsIds);
-
-ids.forEach((id) => {
-  // ❌
-  const quantity = useRecoilValue(productQuantity(id));
-  // ...
-});
-```
-
-따라서 quantity 전역 변수를 만들기 위해 새로운 Selector를 만들어줘야했었다.
-
-```tsx
-export const productQuantityState = selectorFamily<number, number>({
-  key: "productQuantityState",
-  get:
-    (id: number) =>
-    ({ get }) => {
-      const products = get(productsState);
-      const product = products.find((item) => item.id === id);
-      return product ? product.quantity : 0;
-    },
-});
-```
+  즉, 컴포넌트 최상단에서 호출해야한다. 예를 들어, Id의 배열인 Atom이 있다고 하자. 그리고 Id 인자를 받아 Id에 따른 Quantity를 저장하는 SelectorFamily를 만들었다고 하자.
+  
+  다음과 같이 사용하는건 불가능하다. (내가 모르는 다른 기능이 있을 수도?)
+  
+  ```tsx
+  const ids = useRecoilValue(productsIds);
+  
+  ids.forEach((id) => {
+    // ❌
+    const quantity = useRecoilValue(productQuantity(id));
+    // ...
+  });
+  ```
+  
+  따라서 quantity 전역 변수를 만들기 위해 새로운 Selector를 만들어줘야했었다.
+  
+  ```tsx
+  export const productQuantityState = selectorFamily<number, number>({
+    key: "productQuantityState",
+    get:
+      (id: number) =>
+      ({ get }) => {
+        const products = get(productsState);
+        const product = products.find((item) => item.id === id);
+        return product ? product.quantity : 0;
+      },
+  });
+  ```
 
 # 보충 설명
 
