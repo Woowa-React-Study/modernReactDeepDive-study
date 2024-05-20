@@ -9,6 +9,7 @@
 - [🦉마스터위(Jaymyong66)](https://github.com/Jaymyong66)
 - [🦊월하(vi-wolhwa)](https://github.com/vi-wolhwa)
 - [🐧초코(00kang)](https://github.com/00kang)
+- [🍀헤일리(healim01)](https://github.com/healim01)
 
 <br>
 
