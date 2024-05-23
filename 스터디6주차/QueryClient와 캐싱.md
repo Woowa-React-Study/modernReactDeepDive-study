@@ -31,7 +31,7 @@ function Root() {
 - `QueryClient` : `QueryCache`와 `MutationCache`를 담는 그릇
   - 직접 `QueryCache`에 접근하기보다, `QueryClient`를 통해 `QueryCache`와 `MutationCache`에 접근하여 사용함.
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 `QueryClientProvider`를 통해 내려준 `queryClient`에 접근하기 위해서는 `useQueryClient`를 사용해야한다.
 
@@ -41,7 +41,7 @@ const queryClient = useQueryClient();
 
 - queryClient 내부
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 만약 이렇게 선언했다면?
 
@@ -57,7 +57,7 @@ const queryClient = new QueryClient({
 
 `defaultOption`을 설정한걸 확인 가능
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 ### options
 
@@ -92,7 +92,7 @@ const queryClient = new QueryClient({
   - 주의할 점은 stale 상태가 되었다고 해서 refetching이 곧바로 일어나는 것 X
   - **stale 상태가 되고 특정조건을 만족해야 refetching이 일어난다는 것 O**
 
-![alt text](image-7.png)
+![alt text](images/image-7.png)
 
 ### QueryCache
 
@@ -100,7 +100,7 @@ const queryClient = new QueryClient({
 - 우리가 Query를 생성하면, `queryHash`를 객체의 key로, query 인스턴스를 값으로 넣어준다.
   그리고 `queries` 라는 배열에 query 인스턴스를 추가 할 수 있음
 
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 
 - 여기서 `queryHash`는 query key를 stringify한 값
 - 따라서 query 생성시 반드시 query key로 유니크한 값을 지정해야함
@@ -117,6 +117,6 @@ const queryClient = new QueryClient({
 - `useQuery호출 시` `Observer`가 생성된다. 이 `Observer`를 통해 `Query`와 컴포넌트가 연결된다.
 - `Observer` 에는 `QueryClient` 객체를 비롯하여 현재 `Query`, 랜더링 유발 여부를 파악하기 위한 현재 결과값 등이 담겨있다.
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
-![alt text](image-5.png)
+![alt text](images/image-5.png)
