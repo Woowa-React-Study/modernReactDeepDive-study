@@ -17,6 +17,13 @@
 - **Mutations** : 서버의 데이터를 변경(생성, 수정, 삭제)하고, 상태 추적 및 관리가 용이한 작업
 - **Query Invalidation** : 특정 조건에 따라 쿼리 결과를 무효화하고 새 데이터를 가져와 일관성을 유지하는 기능
 
+### 1.3 React Query의 장점
+
+- 자동 캐싱 및 캐시 무효화를 통해 데이터의 최신 상태를 유지할 수 있음.
+- 로딩 및 에러 상태를 쉽게 처리할 수 있음.
+- 페이지네이션, 무한 스크롤 등 복잡한 데이터 가져오기 시나리오를 간편하게 구현할 수 있음.
+- 서버 상태 관리를 위한 다양한 기능을 제공함 (prefetching, mutation, query invalidation 등).
+
 <br/>
 
 ## 2. Query와 useQuery
@@ -130,6 +137,60 @@ function App() {
 - `cacheTime` : 쿼리 결과가 캐시에 유지되는 시간입니다. (기본값 : 5분)
 - `staleTime` : 쿼리 결과가 신선하다고 간주되는 시간(ms)으로 이 시간이 지나면 쿼리가 재실행됩니다. (기본값 : 0)
 - `refetchOnMount` : 컴포넌트가 마운트될 때 쿼리를 자동으로 리페칭할지 여부를 제어합니다. (기본값: true)
+
+### 2.6 예시 코드
+
+<details>
+<summary>토글 접기/펼치기</summary>
+<div markdown="1">
+
+```tsx
+import { useQuery } from "react-query";
+import axios from "axios";
+
+function App() {
+  const { data, isLoading, isFetching, isError, error, refetch, status } = useQuery(
+    ["todos", { page: 1 }], // queryKey
+    async ({ queryKey }) => {
+      const [_, { page }] = queryKey;
+      const response = await axios.get(`https://jsonplaceholder.typicode.com/todos?_page=${page}`);
+      return response.data;
+    }, // queryFn
+    {
+      cacheTime: 60 * 1000, // 1분
+      staleTime: 30 * 1000, // 30초
+      refetchOnMount: false,
+    }
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <div>
+      <h1>Todos</h1>
+      <button onClick={() => refetch()}>Refetch</button>
+      <div>Status: {status}</div>
+      <div>Is Fetching: {isFetching ? "Yes" : "No"}</div>
+      <ul>
+        {data.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+```
+
+</div>
+</details>
 
 <br/>
 
