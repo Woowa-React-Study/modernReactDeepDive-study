@@ -1,4 +1,4 @@
-# React Query - 에러 핸들링과 DevTools
+# React Query - Error Handling과 Suspense
 
 ### React Query란
 
@@ -47,6 +47,7 @@ function TodoList() {
 2. Error Boundary와 함께
    react에서의 Error Boundary와 함께 사용할 수 있다.
    useQuery에 옵션값 `throwOnError: true`로 준다.
+   (v5에서 기존 useErrorBoundary 옵션이 throwOnError로 이름이 변경)
 
 ```tsx
 function TodoList() {
