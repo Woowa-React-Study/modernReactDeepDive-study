@@ -123,10 +123,43 @@ const mutation = useMutation(addTodo, {
 
 **1. 컴포넌트 단위의 Mutation 관리**
 해당 컴포넌트가 언마운트되면 자동으로 Mutation 상태가 정리됩니다.
+```jsx
+const TodoList = () => {
+  const mutation = useMutation(addTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ scope: 'TodoList' });
+    },
+    scope: 'TodoList',
+  });
 
+  // ...
+};
+```
 **2. 중첩된 Mutation 키 관리**
 각 범위에서 독립적으로 Mutation을 관리할 수 있습니다.
+```jsx
+const UserProfile = () => {
+  const mutation = useMutation(updateUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ scope: 'UserProfile' });
+    },
+    scope: 'UserProfile',
+  });
 
+  // ...
+};
+
+const UserSettings = () => {
+  const mutation = useMutation(updateUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ scope: 'UserSettings' });
+    },
+    scope: 'UserSettings',
+  });
+
+  // ...
+};
+```
 ## Mutation의 상태(Loading, Error, Success) 핸들링
 
 ```jsx
