@@ -75,12 +75,16 @@ function App() {
 
   ```tsx
   // 다음의 세가지 쿼리 키는 모두 동일함
-  ["todos", { status: "done", page: 1 }][("todos", { page: 1, status: "done" })][
-    ("todos", { page: 1, status: "done", other: undefined })
-  ][
-    // 다음의 세 가지 쿼리 키는 모두 동일하지 않음
-    ("todos", "done", 1)
-  ][("todos", 1, "done")][("todos", undefined, 1, "done")];
+  // 아래 세 가지 예시에서, queryKey로 사용된 배열은 모두 동일한 해시 값을 갖습니다. 객체 내의 키 순서가 다르더라도, 객체 자체가 동일한 키-값 쌍을 가지므로 동일하게 처리됩니다.
+  useQuery({ queryKey: ['todos', { status, page }], ... })
+  useQuery({ queryKey: ['todos', { page, status }], ...})
+  useQuery({ queryKey: ['todos', { page, status, other: undefined }], ... })
+
+  // 다음의 세 가지 쿼리 키는 모두 동일하지 않음
+  // 아래 세 가지 예시에서는 배열 항목의 순서가 다르기 때문에 각각 다른 해시 값을 갖습니다. 배열의 순서는 해시 값을 결정하는 데 중요한 요소입니다.
+  useQuery({ queryKey: ['todos', status, page], ... })
+  useQuery({ queryKey: ['todos', page, status], ...})
+  useQuery({ queryKey: ['todos', undefined, page, status], ...})
   ```
 
 - 쿼리 함수가 변수에 의존하는 경우, 해당 변수를 쿼리 키에 포함시켜야 합니다.
