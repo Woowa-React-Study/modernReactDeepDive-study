@@ -68,11 +68,7 @@ export function Posts() {
     <>
       <ul>
         {data.map((post) => (
-          <li
-            key={post.id}
-            className="post-title"
-            onClick={() => setSelectedPost(post)}
-          >
+          <li key={post.id} className="post-title" onClick={() => setSelectedPost(post)}>
             {post.title}
           </li>
         ))}
@@ -167,11 +163,7 @@ export function Posts() {
     <>
       <ul>
         {data.map((post) => (
-          <li
-            key={post.id}
-            className="post-title"
-            onClick={() => setSelectedPost(post)}
-          >
+          <li key={post.id} className="post-title" onClick={() => setSelectedPost(post)}>
             {post.title}
           </li>
         ))}
@@ -206,7 +198,7 @@ export function Posts() {
 - 주의해야할 점은 `prefetchQuery`의 query key는 `useQuery`의 query key와 동일해야한다.
   왜냐하면 리액트 쿼리가 캐시에 이미 데이터가 있는지 확인할 때 이 key를 찾기 때문이다.
 
-![Alt text](image-9.png)
+![Alt text](images/image-9.png)
 
 dev tool을 이용해 확인해보면 현재 페이지가 6페이지인데, 미리 7페이지의 데이터를 fetch 해놓은것을 확인 할 수 있고, 앞서 구현했던거와 달리 다음 페이지 버튼을 눌러도 로딩이 없다.
 
@@ -218,9 +210,7 @@ dev tool을 이용해 확인해보면 현재 페이지가 6페이지인데, 미�
 ```javascript
 export async function fetchInfinityPosts(props) {
   console.log("api props", props);
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts?_limit=20&_page=1`
-  );
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=20&_page=1`);
   return response.json();
 }
 ```
@@ -242,9 +232,7 @@ export default function InfiniteScrollPosts() {
 
   return (
     <div className="postList">
-      {data.pages.map((posts) =>
-        posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-      )}
+      {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
       <button>Loading More</button>
     </div>
   );
@@ -252,7 +240,7 @@ export default function InfiniteScrollPosts() {
 ```
 
 `console.log` 찍힌걸 보면 아래와 같다.
-![Alt text](image.png)
+![Alt text](images/image.png)
 
 fetch 함수의 param에 `useInfiniteQuery`의 props들이 들어간걸 볼 수 있다.
 `initialPageParam`이 api에 들어갔으면 좋겠으니 아래와 같이 수정한다.
@@ -295,9 +283,7 @@ export default function InfiniteScrollPosts() {
 
   return (
     <div className="postList">
-      {data.pages.map((posts) =>
-        posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-      )}
+      {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
       <button>Load More</button>
     </div>
   );
@@ -331,16 +317,14 @@ export default function InfiniteScrollPosts() {
 
   return (
     <div className="postList">
-      {data.pages.map((posts) =>
-        posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-      )}
+      {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
       <button onClick={() => fetchNextPage()}>Load More</button>
     </div>
   );
 }
 ```
 
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 버튼을 누르면 위와같이 2페이지를 페칭하는것을 볼 수 있다.
 `getNextPageParam`이 현재 2를 return 하기 때문이다.
 
@@ -363,13 +347,13 @@ const { data, status, error, fetchNextPage } = useInfiniteQuery({
 ```
 
 `lastPage`,`allPages`가 뭔지 알아보기 위해 `console.log`를 찍어보자.
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 1페이지에서는 위와같이 나오고
 
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 2페이지를 페칭하고나서는 이렇게된다.
 
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
 
 - `allPages` : 이름대로 지금까지 로드한 모든 페이지들
 - `lastPage` : 이름대로 마지막 페이지 정보
@@ -413,9 +397,7 @@ export default function InfiniteScrollPosts() {
 
   return (
     <div className="postList">
-      {data.pages.map((posts) =>
-        posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-      )}
+      {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
       <button onClick={() => fetchNextPage()}>
         {isFetchingNextPage ? "Loading more..." : "Load More"}
         // 버튼 수정
@@ -425,7 +407,7 @@ export default function InfiniteScrollPosts() {
 }
 ```
 
-![Alt text](image-5.png)
+![Alt text](images/image-5.png)
 
 - 다음 페이지 데이터를 패치해오는 동안 버튼 렌더링이 바뀌는것을 볼 수 있다.
 
@@ -442,14 +424,7 @@ export default function InfiniteScrollPosts() {
 
 ```javascript
 export default function InfiniteScrollPosts() {
-  const {
-    data,
-    status,
-    error,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } =
+  const { data, status, error, fetchNextPage, isFetchingNextPage, hasNextPage } =
     // hasNextPage 추가
     useInfiniteQuery({
       queryKey: ["posts"],
@@ -470,9 +445,7 @@ export default function InfiniteScrollPosts() {
 
   return (
     <div className="postList">
-      {data.pages.map((posts) =>
-        posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-      )}
+      {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
       <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
         {/* 버튼에 disabled 추가 */}
         {isFetchingNextPage ? "Loading more..." : "Load More"}
@@ -483,7 +456,7 @@ export default function InfiniteScrollPosts() {
 ```
 
 근데 위와 같이 수정해도 여전히 버튼은 disabled 되지않고
-![Alt text](image-6.png)
+![Alt text](images/image-6.png)
 이렇게 쭉 get 요청을 보낸다.
 이유는
 
@@ -508,7 +481,7 @@ export default function InfiniteScrollPosts() {
 
 위와 같이 수정해보자.
 
-![Alt text](image-7.png)
+![Alt text](images/image-7.png)
 그럼 마지막 페이지(5페이지)에서 "Load More" 버튼을 눌렀을 때, 버튼이 disabled 되는것을 볼수있다.
 
 ```javascript
@@ -524,15 +497,8 @@ export default function InfiniteScrollPosts() {
 disabled에 위와 같이 `isNextFetchingPage`도 추가해줘서 페이지를 페칭하고있을 때도 버튼이 disabled 되도록하자.
 
 ```javascript
-<button
-  disabled={!hasNextPage || isNextFetchingPage}
-  onClick={() => fetchNextPage()}
->
-  {isFetchingNextPage
-    ? "Loading More..."
-    : hasNextPage
-    ? "Load More"
-    : "Nothing to load more"}
+<button disabled={!hasNextPage || isNextFetchingPage} onClick={() => fetchNextPage()}>
+  {isFetchingNextPage ? "Loading More..." : hasNextPage ? "Load More" : "Nothing to load more"}
 </button>
 ```
 
@@ -556,14 +522,7 @@ export default function InfiniteScrollPosts() {
     threshold: 0,
   });
 
-  const {
-    data,
-    status,
-    error,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const { data, status, error, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: fetchInfinityPosts,
     initialPageParam: 5,
@@ -589,9 +548,7 @@ export default function InfiniteScrollPosts() {
   if (status === "success") {
     return (
       <div className="postList">
-        {data.pages.map((posts) =>
-          posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-        )}
+        {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
         <button
           ref={ref}
           disabled={!hasNextPage || isFetchingNextPage}
@@ -612,7 +569,7 @@ export default function InfiniteScrollPosts() {
 위 코드처럼
 button에 ref를 연결시켜주고 inView를 console.log 찍어보자
 
-![Alt text](image-8.png)
+![Alt text](images/image-8.png)
 
 버튼이 브라우저상에서 보여질 때 `inView`값이 `true`로 변하는 모습을 볼 수 있다.
 브라우저에서 버튼이 안보이게되면 `false`가 된다.
@@ -626,14 +583,7 @@ export default function InfiniteScrollPosts() {
     threshold: 0,
   });
 
-  const {
-    data,
-    status,
-    error,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const { data, status, error, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: fetchInfinityPosts,
     initialPageParam: 5,
@@ -660,9 +610,7 @@ export default function InfiniteScrollPosts() {
   if (status === "success") {
     return (
       <div className="postList">
-        {data.pages.map((posts) =>
-          posts.map((post) => <h3 key={post.id}>{post.title}</h3>)
-        )}
+        {data.pages.map((posts) => posts.map((post) => <h3 key={post.id}>{post.title}</h3>))}
         <button ref={ref}></button>
         {isFetchingNextPage && <h4>Loading ...</h4>}
       </div>
