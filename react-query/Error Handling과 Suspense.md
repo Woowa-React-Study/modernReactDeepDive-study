@@ -409,3 +409,4 @@ toast.error("Something went wrong");
   https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose
   https://velog.io/@cnsrn1874/breaking-react-querys-api-on-purpose
   https://tkdodo.eu/blog/react-query-error-handling
+  https://www.moonkorea.dev/React-TanStack-Query-v5-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-(%EB%A6%AC%EC%95%A1%ED%8A%B8%EC%BF%BC%EB%A6%AC)
