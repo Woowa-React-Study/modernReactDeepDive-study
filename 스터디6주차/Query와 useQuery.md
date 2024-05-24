@@ -78,7 +78,6 @@ function App() {
   ["todos", { status: "done", page: 1 }]
   [("todos", { page: 1, status: "done" })]
   [("todos", { page: 1, status: "done", other: undefined })]
-  
  // 다음의 세 가지 쿼리 키는 모두 동일하지 않음
   [("todos", "done", 1)],
   [("todos", 1, "done")],
