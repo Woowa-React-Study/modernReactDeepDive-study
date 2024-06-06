@@ -48,9 +48,9 @@ Flux는 사용자와의 상호작용에 기반해 Action을 만들고 Action을 
 
 데이터를 변경하는 행위. Dispatcher에게 전달되는 객체이다. Action create 메서드는 새로 발생한 Action의 타입과 새로운 데이터(Payload)를 묶어 Dispatcher에게 전달한다.
 
-```json
+```javascript
 {
-  type: 'SET_'Product,
+  type: 'SET_Product',
   data: {
     'name': 'SHOES',
     'size': 270
@@ -404,9 +404,9 @@ export function Counter() {
 
 # 참고자료
 
-공식 홈페이지
-flux : https://haruair.github.io/flux/docs/overview.html
-react-redux 튜토리얼 : https://usonkrap.github.io/2018/12/15/React-Redux-Tutorial-for-Beginners.html
+공식 홈페이지   
+flux : https://haruair.github.io/flux/docs/overview.html   
+react-redux 튜토리얼 : https://usonkrap.github.io/2018/12/15/React-Redux-Tutorial-for-Beginners.html  
 
 ### Event Sourcing 예제
 
