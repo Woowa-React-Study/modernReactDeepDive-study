@@ -73,19 +73,22 @@ function App() {
 
   - 객체 내부의 순서에 관계없이 동일한 데이터에 대해 항상 같은 쿼리 키를 생성할 수 있으므로, 캐싱을 더 효과적으로 활용할 수 있습니다.
 
-  ```tsx
-  // 다음의 세가지 쿼리 키는 모두 동일함
-  // 아래 세 가지 예시에서, queryKey로 사용된 배열은 모두 동일한 해시 값을 갖습니다. 객체 내의 키 순서가 다르더라도, 객체 자체가 동일한 키-값 쌍을 가지므로 동일하게 처리됩니다.
-  useQuery({ queryKey: ['todos', { status, page }], ... })
-  useQuery({ queryKey: ['todos', { page, status }], ...})
-  useQuery({ queryKey: ['todos', { page, status, other: undefined }], ... })
+  - 동일한 쿼리 예시<br/>
+    아래 세 가지 예시에서, queryKey로 사용된 배열은 모두 동일한 해시 값을 갖습니다. 객체 내의 키 순서가 다르더라도, 객체 자체가 동일한 키-값 쌍을 가지므로 동일하게 처리됩니다.
 
-  // 다음의 세 가지 쿼리 키는 모두 동일하지 않음
-  // 아래 세 가지 예시에서는 배열 항목의 순서가 다르기 때문에 각각 다른 해시 값을 갖습니다. 배열의 순서는 해시 값을 결정하는 데 중요한 요소입니다.
-  useQuery({ queryKey: ['todos', status, page], ... })
-  useQuery({ queryKey: ['todos', page, status], ...})
-  useQuery({ queryKey: ['todos', undefined, page, status], ...})
-  ```
+    ```tsx
+    useQuery({ queryKey: ['todos', { status, page }], ... })
+    useQuery({ queryKey: ['todos', { page, status }], ...})
+    useQuery({ queryKey: ['todos', { page, status, other: undefined }], ... })
+    ```
+
+  - 동일하지 않은 쿼리 예시<br/>
+    아래 세 가지 예시에서는 배열 항목의 순서가 다르기 때문에 각각 다른 해시 값을 갖습니다. 배열의 순서는 해시 값을 결정하는 데 중요한 요소입니다.
+    ```tsx
+    useQuery({ queryKey: ['todos', status, page], ... })
+    useQuery({ queryKey: ['todos', page, status], ...})
+    useQuery({ queryKey: ['todos', undefined, page, status], ...})
+    ```
 
 - 쿼리 함수가 변수에 의존하는 경우, 해당 변수를 쿼리 키에 포함시켜야 합니다.
 
@@ -127,7 +130,7 @@ function App() {
 - `isLoading` : 쿼리의 첫 번재 요청이 진행 중인지 여부를 나타냅니다.
 - `isFetching` : 쿼리의 요청이 진행 중인지 여부를 나타냅니다.
 - `isError` : 쿼리에서 에러가 발생했는지 여부를 나타냅니다.
-- `eror` : 쿼리에서 발생한 에러 객체입니다.
+- `error` : 쿼리에서 발생한 에러 객체입니다.
 - `refetch` : 쿼리를 수동으로 다시 가져오는 함수입니다.
 - status
   - Query는 데이터를 가져오는 과정에서 다음과 같은 상태를 가질 수 있습니다.
