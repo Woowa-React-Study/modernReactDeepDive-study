@@ -1,15 +1,30 @@
 # React Query - Error Handling과 Suspense
 
-### React Query란
+- React Query란
+- React Query - Error Handling
+  - isError 반환값 활용
+  - Error Boundary와 함께 활용
+  - onError 콜백(v5부터 삭제, global QueryCache의 onError 사용)
+  - 그럼 어떻게 쓰는게 좋을까?
+- React Query - Suspense
+  - Suspense에서 주의할 점
+  - 해결법 1 : useQueries를 쓴다.
+  - 해결법 2 : useSuspenseQueries hook을 쓴다.
+- react-query v5 관련
+  - 주요 변경점 : useQuery에서 콜백을 제거(useMutation과는 관계 없음)
+- 관련 hooks
+- 참고 자료
+
+## React Query란
 
 it makes fetching, caching, synchronizing and updating server state in your web applications a breeze.
 It works amazingly well out-of-the-box, with zero-config, and can be customized to your liking as your application grows.
 
 Context API 기반으로 만들어져, getQueryDate, setQueryData 등 데이터 저장 관련 로직도 있다. 데이터 저장소로도 쓸 수 있다는 말이다.
 
-### Error Handling
+## React Query - Error Handling
 
-1. isError 반환값
+### 1. isError 반환값
    아래는 isError flag로 에러 핸들링을 하는 예시이다.
 
    but..
@@ -44,7 +59,7 @@ function TodoList() {
 }
 ```
 
-2. Error Boundary와 함께
+### 2. Error Boundary와 함께
    react에서의 Error Boundary와 함께 사용할 수 있다.
    useQuery에 옵션값 `throwOnError: true`로 준다.
    (v5에서 기존 useErrorBoundary 옵션이 throwOnError로 이름이 변경)
@@ -86,7 +101,7 @@ useQuery({
 
 하지만 ErrorBoundary 자체의 문제로 이벤트 헨들링과 비동기 처리를 할 때, 에러를 제대로 못 잡는 경우가 있었으니 주의하자. [(이번 미션에서도 예를 들면, 버튼 클릭 후 보내는 요청에서의 에러)](https://happysisyphe.tistory.com/66)
 
-3. onError 콜백
+### 3. onError 콜백
    onError 일때 어떤 동작을 할지 콜백을 줄 수 있다.
    다만 v5부터 해당 콜백을 권장하지 않는다고 한다. (react-query v5 관련 얘기에서 후술)
 
@@ -100,7 +115,7 @@ const useTodos = () =>
   });
 ```
 
-### 그럼 어떻게 쓰는게 좋을까
+### 그럼 어떻게 쓰는게 좋을까?
 
 - useQuery의 반환값인 error 인자를 사용
 - onError 콜백을 global QueryCache / MutationCache에서 사용
@@ -120,7 +135,7 @@ const queryClient = new QueryClient({
 });
 ```
 
-### Suspense
+## React Query - Suspense
 
 useQuery에서 suspense 옵션을 true로 켜준다
 
@@ -155,6 +170,9 @@ function TodoList() {
   query를 두개를 사용할 때, 다음과 같이 사용한다면 주의해야한다.
   Suspense는 Promise를 catch하여 Promise 상태에 따라서 children 또는 LoadingFallback 컴포넌트를 반환한다.
   pending 상태일 때에는 Loading을 반환하고 있고, children을 실행시키지 않는다는 것이다. 그럼 하나의 API 요청이 발생하면, children 컴포넌트의 실행은 멈추고 Loading을 반환하게 되기에 waterfall이 발생한다.
+  
+  <br>
+  
   <img src='./images/1.png' width=300>
 
 ```tsx
@@ -198,8 +216,9 @@ function Before() {
 }
 ```
 
-- 해결법 1
+- 해결법 1 :    
   useQueries를 쓴다. 쿼리가 병렬 처리 되며 suspense waterfall을 줄일 수 있다.
+  
   <img src='./images/2.png' width=300>
 
 ```tsx
@@ -219,7 +238,7 @@ function After_useQueries() {
 
 ```
 
-- 해결법 2
+- 해결법 2 :   
   useSuspenseQueries hook을 쓴다.
   v5부터는 안정적으로 suspense를 사용해 데이터 패칭을 할 수 있다. useQuery에서 사용하던 suspense: boolean 옵션은 제거되고 useSuspenseQuery, useSuspenseInfiniteQuery와 useSuspenseQueries를 사용한다고 한다.
 
@@ -239,8 +258,8 @@ v5에서 주요 변경점은 useQuery에서 *콜백*을 제거하는 것이라�
 (useMutation와는 상관 없는 이야기)
 ex) onSuccess, onError, onSettled
 
-위에서 onError 용법을 확인했듯 직관적인 API 이다.
-다음과 같은 onError 용법에서, 만약 해당 콜백이 없다면 아래와 같이 useEffect를 사용했을 것이다.
+위에서 onError 용법을 확인했듯 onError는 꽤 직관적인 API 이다.   
+다음과 같은 onError 용법에서, 만약 해당 onError 콜백이 없다면 아래와 같이 useEffect를 사용해 onError와 비슷한 기능을 하도록 구현했을 것이다.
 
 ```tsx
 export function useTodos() {
@@ -272,9 +291,9 @@ const queryClient = new QueryClient({
 });
 ```
 
--> 그렇다면 위 코드의 onError에 콜백 인자인 error 자체의 메시지가 아닌 Query마다 다른 메시지를 커스텀 하고 싶다면 어떻게 해야할까.
+**-> 그렇다면 위 코드의 onError에 콜백 인자인 error 자체의 메시지가 아닌 Query마다 다른 메시지를 커스텀 하고 싶다면 어떻게 해야할까?**
 
-Query의 meta 필드를 이용한다.
+**Query의 meta 필드를 이용한다.**   
 meta는 어떤 정보를 채우는 임의의 객체인데, 전역 콜백 등 Query에 접근할 수 있는 모든 곳에서 사용 가능하다.
 아래와 같은 코드이며, useQuery 인스턴스에서 onError를 설정하는 것과 비슷할 수 있지만 하나의 안전장치가 추가되었다고 볼 수 있다.
 
@@ -404,9 +423,9 @@ import toast from "react-hot-toast";
 toast.error("Something went wrong");
 ```
 
-- 참고 아티클
-  [공식 문서](https://tanstack.com/query/latest/docs/framework/react/reference/useQueryErrorResetBoundary)
-  https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose
-  https://velog.io/@cnsrn1874/breaking-react-querys-api-on-purpose
-  https://tkdodo.eu/blog/react-query-error-handling
-  https://www.moonkorea.dev/React-TanStack-Query-v5-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-(%EB%A6%AC%EC%95%A1%ED%8A%B8%EC%BF%BC%EB%A6%AC)
+- 참고 아티클   
+  [공식 문서](https://tanstack.com/query/latest/docs/framework/react/reference/useQueryErrorResetBoundary)   
+  https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose   
+  https://velog.io/@cnsrn1874/breaking-react-querys-api-on-purpose   
+  https://tkdodo.eu/blog/react-query-error-handling   
+  https://www.moonkorea.dev/React-TanStack-Query-v5-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-(%EB%A6%AC%EC%95%A1%ED%8A%B8%EC%BF%BC%EB%A6%AC)   
